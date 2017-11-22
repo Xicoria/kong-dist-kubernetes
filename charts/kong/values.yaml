@@ -23,7 +23,7 @@ kong:
     name: kong-database
     postgres:
       username: kong
-      databse: kong
+      database: kong
       password: kong
       host: postgres
       port: 5432
