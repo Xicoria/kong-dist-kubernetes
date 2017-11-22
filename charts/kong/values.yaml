@@ -19,7 +19,7 @@ kong:
     type: NodePort #Options: NodePort, ClusterIP, LoadBalancer
   logLevel: debug #Options: debug, info, notice, warn, error, crit, alert, emerg
   database:
-    useCassandra: false
+    useCassandra: true
     name: kong-database
     postgres:
       username: kong

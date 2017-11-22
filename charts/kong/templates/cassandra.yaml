@@ -1,5 +1,4 @@
 {{ if and (.Values.provisionDB) (.Values.kong.database.useCassandra) }}
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -9,7 +8,7 @@ spec:
   ports:
     - port: 9042
   selector:
-    app: {{ .Release.Name }}-{{ .Values.kong.database.names }}
+    app: {{ .Release.Name }}-{{ .Values.kong.database.name }}
 
 ---
 apiVersion: "apps/v1beta1"
@@ -58,7 +57,7 @@ spec:
           - name: HEAP_NEWSIZE
             value: 100M
           - name: CASSANDRA_SEEDS
-            value: "cassandra-0.cassandra.default.svc.cluster.local"
+            value: {{ .Release.Name }}-{{ .Values.kong.database.name }}-0.{{ .Release.Name }}-{{ .Values.kong.database.name }}.default.svc.cluster.local
           - name: CASSANDRA_CLUSTER_NAME
             value: "K8Demo"
           - name: CASSANDRA_DC
