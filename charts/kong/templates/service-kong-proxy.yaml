@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-proxy
+  name: {{ template "kong.fullname" . }}-proxy
 spec:
   type: {{ .Values.kong.proxy.type }}
   ports:
@@ -14,4 +14,4 @@ spec:
     targetPort: {{ .Values.kong.proxy.containerSSLPort }}
     protocol: TCP
   selector:
-    app: {{ .Release.Name }}-{{ .Values.kongAppName }}
+    app: "{{ template "kong.fullname" . }}"
