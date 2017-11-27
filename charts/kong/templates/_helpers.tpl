@@ -1,26 +1,16 @@
 {{/* vim: set filetype=mustache: */}}
 {{/*
-Expand the name of the chart.
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+
+{{- define "kong.name" -}}
+{{- default .Chart.Name .Values.kong.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
 {{- define "kong.fullname" -}}
-{{- $name := default "kong" .Values.nameOverride -}}
-{{- if ne .Chart.Name .Release.Name -}}
+{{- $name := default .Chart.Name .Values.kong.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "%s" $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
 {{- end -}}
 
 {{- define "kong.postgresql.fullname" -}}

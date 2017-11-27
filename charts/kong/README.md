@@ -1,7 +1,8 @@
 Usage
 ==========
 
-Firstly install helm: [docs here](https://helm.sh/)
+Note: Make sure helm: [docs here](https://docs.helm.sh/using_helm/#quickstart-guide)
+is installed and initialized
 
 1. Clone the repository
 2. cd ./charts/kong/
@@ -11,7 +12,3 @@ Firstly install helm: [docs here](https://helm.sh/)
 
 You will then see notes on how to connect and use your Kong deployment.
 
-Todo:
---------
-
-- Fix cassandra deployment issues
