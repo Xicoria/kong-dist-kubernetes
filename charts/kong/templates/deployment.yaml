@@ -1,17 +1,24 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-{{ .Values.kongAppName }}
+  name: "{{ template "kong.fullname" . }}"
+  labels:
+    app: "{{ template "kong.fullname" . }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    heritage: "{{ .Release.Service }}"
+    release: "{{ .Release.Name }}"
 spec:
   replicas: {{ .Values.kongInstanceCount }}
   template:
     metadata:
       labels:
-        name: {{ .Release.Name }}-{{ .Values.kongAppName }}
-        app: {{ .Release.Name }}-{{ .Values.kongAppName }}
+        app: "{{ template "kong.fullname" . }}"
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        heritage: "{{ .Release.Service }}"
+        release: "{{ .Release.Name }}"
     spec:
       containers:
-      - name: kong
+      - name: {{ template "kong.fullname" . }}
         image: kong
         env:
           - name: KONG_NGINX_DAEMON
@@ -26,12 +33,12 @@ spec:
             value: "/dev/stderr"
           - name: KONG_LOG_LEVEL
             value: {{ .Values.kong.logLevel }}
-        {{ if .Values.kong.database.useCassandra }}
+        {{ if .Values.cassandra.enabled }}
           - name: KONG_DATABASE
             value: "cassandra"
           {{ if .Values.provisionDB }}
           - name: KONG_CASSANDRA_CONTACT_POINTS
-            value: {{ .Release.Name }}-{{ .Values.kong.database.name }}.{{ .Release.Namespace }}.svc.cluster.local
+            value: {{ template "kong.cassandra.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
           {{ else }}
           - name: KONG_CASSANDRA_CONTACT_POINTS
             value: {{ .Values.kong.database.cassandra.contactPoints }}
@@ -51,7 +58,7 @@ spec:
             value: {{ .Values.kong.database.postgres.password }}
           {{ if .Values.provisionDB }}
           - name: KONG_PG_HOST
-            value: {{ .Release.Name }}-{{ .Values.kong.database.name }}.{{ .Release.Namespace }}.svc.cluster.local
+            value: {{ template "kong.postgresql.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
           {{ else }}
           - name: KONG_PG_HOST
             value: {{ .Values.kong.database.postgres.host }}
